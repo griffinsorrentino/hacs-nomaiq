@@ -16,7 +16,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from nomaiq.const import CLIENT_ID, CLIENT_SECRET, DOMAIN
+from custom_components.nomaiq.const import CLIENT_ID, CLIENT_SECRET, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -17,9 +17,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from nomaiq import NomaIQConfigEntry
-from nomaiq.const import DOMAIN
-from nomaiq.coordinator import NomaIQDataUpdateCoordinator
+from custom_components.nomaiq import NomaIQConfigEntry
+from custom_components.nomaiq.const import DOMAIN
+from custom_components.nomaiq.coordinator import NomaIQDataUpdateCoordinator
 
 
 async def async_setup_entry(

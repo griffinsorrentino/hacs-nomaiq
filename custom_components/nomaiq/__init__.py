@@ -17,8 +17,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from nomaiq.const import CLIENT_ID, CLIENT_SECRET, NORMAL_UPDATE_INTERVAL
-from nomaiq.coordinator import NomaIQDataUpdateCoordinator
+from custom_components.nomaiq.const import CLIENT_ID, CLIENT_SECRET, NORMAL_UPDATE_INTERVAL
+from custom_components.nomaiq.coordinator import NomaIQDataUpdateCoordinator
 
 _PLATFORMS: list[Platform] = [Platform.LIGHT, Platform.COVER]
 _LOGGER = logging.getLogger(__name__)

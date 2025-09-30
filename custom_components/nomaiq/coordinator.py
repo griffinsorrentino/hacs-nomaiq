@@ -8,7 +8,7 @@ import ayla_iot_unofficial
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from nomaiq.const import DOMAIN, NORMAL_UPDATE_INTERVAL, TRANSITION_UPDATE_INTERVAL
+from custom_components.nomaiq.const import DOMAIN, NORMAL_UPDATE_INTERVAL, TRANSITION_UPDATE_INTERVAL
 
 
 class NomaIQDataUpdateCoordinator(
