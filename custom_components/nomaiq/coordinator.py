@@ -2,6 +2,7 @@
 
 from datetime import timedelta
 from typing import Set
+import logging
 
 import ayla_iot_unofficial
 
@@ -10,6 +11,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from custom_components.nomaiq.const import DOMAIN, NORMAL_UPDATE_INTERVAL, TRANSITION_UPDATE_INTERVAL
 
+_LOGGER = logging.getLogger(__name__)
 
 class NomaIQDataUpdateCoordinator(
     DataUpdateCoordinator[list[ayla_iot_unofficial.device.Device]]
@@ -78,6 +80,7 @@ class NomaIQDataUpdateCoordinator(
                 self.logger.error("Failed to refresh auth: %s", ex)
                 raise UpdateFailed("Failed to refresh auth") from ex
 
+            _LOGGER.debug("Fetching Data")
             devices = await self._api.async_get_devices()
             current_time = self.hass.loop.time()
 

@@ -19,6 +19,13 @@ from custom_components.nomaiq import NomaIQConfigEntry
 from custom_components.nomaiq.const import DOMAIN
 from custom_components.nomaiq.coordinator import NomaIQDataUpdateCoordinator
 
+MODE_MAP = {
+    "Manual": "Normal",
+    "Continuous": "Persistent",
+    "Auto Dry": "Auto",
+}
+AYLA_TO_HASS_MODE = {v: k for k, v in MODE_MAP.items()}
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -60,8 +67,9 @@ class NomaIQDehumidifierEntity(HumidifierEntity):
             name=device.name,
         )
 
+
     @property
-    def is_on(self) -> bool | None:
+    def is_on(self) -> bool:
         """Return true if dehumidifier is on."""
         data: list[ayla_iot_unofficial.device.Device] = self.coordinator.data
         device: ayla_iot_unofficial.device.Device | None = next(
@@ -70,6 +78,29 @@ class NomaIQDehumidifierEntity(HumidifierEntity):
         )
         return device and device.get_property_value("power")
 
+    @property
+    def current_humidity(self) -> int | None:
+        """Return true if dehumidifier is on."""
+        data: list[ayla_iot_unofficial.device.Device] = self.coordinator.data
+        device: ayla_iot_unofficial.device.Device | None = next(
+            (d for d in data if d.serial_number == self._device.serial_number),
+            None,
+        )
+        return device and device.get_property_value("indoor_humidity")
+
+    @property
+    def target_humidity(self) -> int:
+        """Return true if dehumidifier is on."""
+        data: list[ayla_iot_unofficial.device.Device] = self.coordinator.data
+        device: ayla_iot_unofficial.device.Device | None = next(
+            (d for d in data if d.serial_number == self._device.serial_number),
+            None,
+        )
+        return device and device.get_property_value("humidity")
+
+    async def async_set_humidity(self, humidity: int) -> None:
+        await self._device.async_set_property_value("humidity", humidity)
+
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn device on."""
         await self._device.async_set_property_value("power", 1)
@@ -77,6 +108,21 @@ class NomaIQDehumidifierEntity(HumidifierEntity):
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn device off."""
         await self._device.async_set_property_value("power", 0)
+
+    @property
+    def mode(self) -> str:
+        """Return true if dehumidifier is on."""
+        data: list[ayla_iot_unofficial.device.Device] = self.coordinator.data
+        device: ayla_iot_unofficial.device.Device | None = next(
+            (d for d in data if d.serial_number == self._device.serial_number),
+            None,
+        )
+        raw_mode = self._device.get_property_value("mode")
+        return device and AYLA_TO_HASS_MODE.get(raw_mode, "Manual")
+
+    async def async_set_mode(self, mode: str) -> None:
+        if mode in MODE_MAP:
+            await self._device.async_set_property_value("mode", MODE_MAP[mode])
 
     async def async_update(self) -> None:
         """Update the dehumidifier state."""

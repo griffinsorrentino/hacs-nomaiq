@@ -20,7 +20,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from custom_components.nomaiq.const import CLIENT_ID, CLIENT_SECRET, NORMAL_UPDATE_INTERVAL
 from custom_components.nomaiq.coordinator import NomaIQDataUpdateCoordinator
 
-_PLATFORMS: list[Platform] = [Platform.LIGHT, Platform.COVER]
+_PLATFORMS: list[Platform] = [Platform.LIGHT, Platform.COVER, Platform.HUMIDIFIER]
 _LOGGER = logging.getLogger(__name__)
 
 type NomaIQConfigEntry = ConfigEntry[NomaIQDataUpdateCoordinator]
